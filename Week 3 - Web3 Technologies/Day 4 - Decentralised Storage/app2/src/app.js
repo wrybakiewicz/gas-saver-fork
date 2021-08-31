@@ -11,7 +11,7 @@ app.use(express.static(publicDirPath, { extensions: ['html'] }));
 app.use(express.json());
 
 app.get('', (req, res) => {
-  res.send('<h1>Home page</h1>');
+  res.sendFile(publicDirPath + "/ipfs.html");
 });
 
 app.listen(3000, () => {
