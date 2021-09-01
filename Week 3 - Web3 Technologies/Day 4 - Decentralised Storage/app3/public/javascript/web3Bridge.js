@@ -14,14 +14,15 @@ $(document).ready(() => {
   $('#add-file').click(() => {
     addFile();
   });
+  $('#get-image').click(() => {
+    getImage(cidBox.value);
+  });
 });
 
 async function addFile() {
   const reader = new FileReader();
   reader.onloadend = function () {
     const buf = buffer.Buffer.from(reader.result);
-    // const objBuf = { ...buf };
-    // console.log(objBuf);
     const route = 'addFile';
     const req = { data: buf };
     function update(response) {
@@ -47,14 +48,21 @@ async function getData(cid) {
   const req = { data: cid };
   function update(response) {
     $('#output-text').val(response[0]);
-    // var image = document.createElement('img');
-    // var b64encoded = btoa(String.fromCharCode.apply(null, getImageResult.imagebuffer));
-    var datajpg = "data:image/jpg;base64," + response[0];
-    document.getElementById("ipfs-image").src = datajpg;
   }
   ajaxCall(route, req, update);
 }
 
-// async function addFile(newData) {
-
-// }
+async function getImage(cid) {
+  const route = 'getImage';
+  const req = { data: cid };
+  function update(response) {
+    function toBase64(arr) {
+      arr = new Uint8Array(arr)
+      return btoa(
+        arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+    }
+    $('#ipfs-image').attr('src', `data:image/png;base64,${toBase64(response[0].data)}`);
+  }
+  ajaxCall(route, req, update);
+}

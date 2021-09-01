@@ -46,6 +46,19 @@ app.post('/getData', (req, res) => {
     });
 });
 
+app.post('/getImage', (req, res) => {
+  ipfsApi
+    .ipfsGetImage(req.body.data)
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((e) => {
+      res.status(500, {
+        error: e,
+      });
+    });
+});
+
 app.post('/addFile', (req, res) => {
   ipfsApi
     .addFile(req.body.data)

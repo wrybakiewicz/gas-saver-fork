@@ -34,7 +34,15 @@ const ipfsApi = {
   async addFile(obj) {
     let buf = Buffer.from(obj);
     return await this.ipfsAdd(buf);
-  }
+  },
+  async ipfsGetImage(cid) {
+    try {
+      const data = Buffer.concat(await all(node.cat(cid)));
+      return { 0: data };
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };
 init();
 

@@ -24,12 +24,11 @@
     <br />
     <button id="add-data" type="button">Add text to IPFS</button>
     <br />
-    <p>Enter filename you would like to upload:</p>
+    <p>Browse to image file you would like to upload:</p>
     <input type="file" name="file" id="file">
     <br />
     <button id="add-file" type="button">Add file to IPFS</button>
-    <p>https://ipfs.io/ipfs/</p>
-    <br />
+    <p><b>https://ipfs.io/ipfs/</b></p>
     <p>Output from the IPFS node:</p>
     <textarea placeholder="Awaiting message from IPFS node..." name="output-text" id="output-text" cols="58" rows="5"
         readonly=true></textarea>
@@ -38,9 +37,9 @@
     <input placeholder="Enter CID here." type="text" id="ipfs-request" name="ipfs-request" size='50'>
     <br>
     <button id="get-data" type="button">Get data from IPFS</button>
+    <button id="get-image" type="button">Get image from IPFS</button>
     <br>
-    <image id="ipfs-image"></image>
-
+    <img id="ipfs-image" src="">
 </body>
 
 </html>
