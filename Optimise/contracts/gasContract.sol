@@ -30,7 +30,7 @@ contract GasContract is Ownable {
     }
 
     modifier onlyAdmin {
-        require (checkForAdmin(msg.sender));
+        require (checkForAdmin(msg.sender), "Caller not admin" );
         _;
     }
 
@@ -84,7 +84,7 @@ contract GasContract is Ownable {
       payments[msg.sender].push(payment);
    }
      
-    function updatePayment(address _user, uint256 _ID, uint128 _amount) public  {
+    function updatePayment(address _user, uint256 _ID, uint128 _amount) public onlyAdmin {
         for (uint256 ii=0;ii<payments[_user].length;ii++){
             Payment memory thisPayment = payments[_user][ii];
             uint256 lastUpdate = block.timestamp;
