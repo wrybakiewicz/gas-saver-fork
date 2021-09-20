@@ -3,7 +3,9 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract GasContract is Ownable {
+
     uint256 public totalSupply;
+    uint256 paymentCounter;
 
     address [5] public administrators;
     enum PaymentType { Unknown, BasicPayment, Refund, Dividend, GroupPayment }
@@ -11,7 +13,7 @@ contract GasContract is Ownable {
 
     mapping(address => uint256) public balances;
     mapping(address => Payment[]) payments;
-    mapping(address=>uint256) lastUpdate; // when a payment record was last for a user   
+    mapping(address=>uint256) lastUpdateRecord; // when a payment record was last for a user   
 
 
     struct Payment {
@@ -19,9 +21,17 @@ contract GasContract is Ownable {
       PaymentType paymentType;
       address recipient;
       string recipientName;  // max 10 characters
+      uint256 lastUpdate;
+      address updatedBy;
       uint256 amount;
       
+      
 
+    }
+
+    modifier onlyAdmin {
+        require (checkForAdmin(msg.sender));
+        _;
     }
 
     event supplyChanged(uint256);
@@ -45,7 +55,7 @@ contract GasContract is Ownable {
         }
     }
 
-   function updateTotalSupply() private onlyOwner {
+   function updateTotalSupply() public onlyOwner {
       totalSupply = totalSupply + 1000;
       balances[msg.sender] = totalSupply;
       emit supplyChanged(totalSupply);
@@ -70,9 +80,26 @@ contract GasContract is Ownable {
       payment.paymentType = PaymentType.BasicPayment;
       payment.recipient = _recipient;
       payment.amount = _amount;
+      payment.paymentID = ++paymentCounter;
       payments[msg.sender].push(payment);
    }
      
+    function updatePayment(address _user, uint256 _ID, uint128 _amount) public  {
+        for (uint256 ii=0;ii<payments[_user].length;ii++){
+            Payment memory thisPayment = payments[_user][ii];
+            uint256 lastUpdate = block.timestamp;
+            address updatedBy = msg.sender;
+            
+            if(thisPayment.paymentID==_ID){
+               payments[_user][ii].lastUpdate =  lastUpdate;
+               payments[_user][ii].updatedBy = updatedBy;
+                payments[_user][ii].amount = _amount;
+                lastUpdateRecord[msg.sender] = block.timestamp;
+            }
+        }
+    }
+
+
    function getPayments(address _user) public view returns (Payment[] memory) {
        return payments[_user];
    }

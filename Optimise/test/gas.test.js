@@ -9,10 +9,6 @@ contract("Gas", accounts => {
  it("should check for admin", async () => {
     const instance = await GasContract.deployed();
     let adminFlag;
-
-    // const admins= await instance.administrators.call(0);
-    // console.log("admins are ");
-   // console.log(admins);
    for (ii = 0; ii< 5; ii++){ 
        adminFlag = await instance.checkForAdmin.call(accounts[ii]);
        assert.equal(
@@ -22,6 +18,17 @@ contract("Gas", accounts => {
        }
      });
 
+     it("should check for false admin", async () => {
+        const instance = await GasContract.deployed();
+        let adminFlag;
+           adminFlag = await instance.checkForAdmin.call(accounts[8]);
+           assert.equal(
+               adminFlag,
+           false,
+               "Incorrect admin");    
+
+         });
+    
     it("should say hello", async () => {
         const instance = await GasContract.deployed();
         const welcome = await instance.welcome.call();
@@ -32,7 +39,7 @@ contract("Gas", accounts => {
             );            
         });
 
-    xit("should mint tokens", async () => {
+    it("should mint tokens", async () => {
         const instance = await GasContract.deployed();
         const totalSupply = await instance.totalSupply.call();
         assert.equal(
@@ -42,19 +49,19 @@ contract("Gas", accounts => {
             );            
         });
 
-     xit("should update total supply", async () => {
+     it("should update total supply", async () => {
             const instance = await GasContract.deployed();
-            const initialSuuply = await instance.totalSupply.call();
+            const initialSupply = await instance.totalSupply.call();
             const tx = await instance.updateTotalSupply({from : accounts[0]});
             assert.equal(
-                totalSupply.toNumber(),
+                initialSupply.toNumber(),
                10000,
                 "Minting Failed",
                 );            
             });
 
         
-    xit("should send a basic payment", async () => {
+    it("should send a basic payment", async () => {
             const instance = await GasContract.deployed();
             const tx = await instance.transfer(accounts[1],100, {from : accounts[0]});   
             const payments  = await instance.getPayments(accounts[0]);   
