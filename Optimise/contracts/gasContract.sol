@@ -1,43 +1,64 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract GasContract {
+contract GasContract is Ownable {
     uint256 public totalSupply;
-    address owner;
+
+    address [5] public administrators;
+    enum PaymentType { Unknown, BasicPayment, Refund, Dividend, GroupPayment }
+    PaymentType constant defaultPayment = PaymentType.Unknown;
 
     mapping(address => uint256) public balances;
     mapping(address => Payment[]) payments;
-    
+    mapping(address=>uint256) lastUpdate; // when a payment record was last for a user   
 
-    
+
     struct Payment {
-
-      address receipient;
-      string recipientName;
+      uint256 paymentID;
+      PaymentType paymentType;
+      address recipient;
+      string recipientName;  // max 10 characters
       uint256 amount;
+      
+
     }
-    
-    modifier onlyOwner {
-        require(msg.sender == owner,"You must be the owner"); 
-        _; 
-    }
-   
+
     event supplyChanged(uint256);
     event Transfer(address indexed, uint256);
    
-   constructor() {
+   constructor(address[] memory _admins) {
       totalSupply = 10000;
-      owner = msg.sender;
-      balances[msg.sender] = totalSupply;
+       balances[msg.sender] = totalSupply;
+      setUpAdmins(_admins);
    }
    
    function welcome() public returns (string memory){
        return "hello !";
    }
    
+    function setUpAdmins(address[] memory _admins) public onlyOwner{
+        for (uint256 ii = 0;ii<administrators.length ;ii++){
+            if(_admins[ii] != address(0)){ 
+                administrators[ii] = _admins[ii];
+            } 
+        }
+    }
+
    function updateTotalSupply() private onlyOwner {
       totalSupply = totalSupply + 1000;
+      balances[msg.sender] = totalSupply;
       emit supplyChanged(totalSupply);
+   }
+
+   function checkForAdmin(address _user) public view returns (bool) {
+       bool admin = false;
+       for (uint256 ii = 0; ii< administrators.length;ii++ ){
+          if(administrators[ii] ==_user){
+              admin = true;
+          }
+       }
+       return admin;
    }
    
    function transfer(address _recipient, uint256 _amount) public {
@@ -46,7 +67,8 @@ contract GasContract {
       balances[_recipient] += _amount;
       emit Transfer(_recipient, _amount);
       Payment memory payment;
-      payment.receipient = _recipient;
+      payment.paymentType = PaymentType.BasicPayment;
+      payment.recipient = _recipient;
       payment.amount = _amount;
       payments[msg.sender].push(payment);
    }
