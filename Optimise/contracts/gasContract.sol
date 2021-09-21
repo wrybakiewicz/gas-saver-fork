@@ -73,7 +73,7 @@ contract GasContract is Ownable {
    
    function transfer(address _recipient, uint256 _amount, string memory _name) public {
       require(balances[msg.sender] >= _amount,"Gas Contract - Transfer function - Sender has insufficient Balance");
-      require(bytes(_name).length < 13,"Gas Contract - Transfer function -  Name too long");
+      require(bytes(_name).length < 13,"Gas Contract - Transfer function -  The recipient name is too long, there is a max length of 12 characters");
       balances[msg.sender] -= _amount;
       balances[_recipient] += _amount;
       emit Transfer(_recipient, _amount);
