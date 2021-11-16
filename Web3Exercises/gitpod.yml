@@ -1,4 +1,0 @@
-# Commands to start on workspace startup
-# Ports to expose on workspace startup
-ports:
-  - port: 8545
