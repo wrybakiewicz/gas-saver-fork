@@ -17,15 +17,20 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 // To test: npx hardhat test
 
+// module.exports = {
+//   defaultNetwork: "ganache",
+//   networks: {
+//     ganache: {
+//     // change URL to the URL from your Ganache
+//       url: "http://127.0.0.1:7545",
+//       gasLimit: 6000000000,
+//       defaultBalanceEther: 1000,
+//     },
+//   },
+//   solidity: "0.8.0",
+// };
+
+
 module.exports = {
-  defaultNetwork: "ganache",
-  networks: {
-    ganache: {
-    // change URL to the URL from your Ganache
-      url: "http://127.0.0.1:7545",
-      gasLimit: 6000000000,
-      defaultBalanceEther: 1000,
-    },
-  },
-  solidity: "0.8.0",
+   solidity: "0.8.0",
 };
