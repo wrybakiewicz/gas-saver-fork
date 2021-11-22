@@ -7,7 +7,6 @@ const app = express();
 
 const publicDirPath = path.join(__dirname, '../public');
 
-// app.use(express.urlencoded({ extended: false, limit: '2gb' }));
 app.use(express.static(publicDirPath, { extensions: ['html'] }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: false, limit: '50mb' }));
