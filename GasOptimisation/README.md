@@ -1,15 +1,15 @@
-# Basic Sample Hardhat Project
+# Optimisation Game Instructions
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
 
-Try running some of the following tasks:
+1. Use gitpod to create a workspace
+https://github.com/ExtropyIO/Academy
+2. Open a terminal go to the GasOptimisation directory
+3. Run ``` npm i``` to install the dependencies
+4. Run ``` npx hardhat test``` to run the tests and get a gas usage report
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+![](https://i.imgur.com/sXcfvEj.png)
+
+The aim of the game is to reduce the Average figures for contract deployment and transfer and updatePayment functions as much as possible.
+
+You can change the contract as much as you like.
+You **cannot** change the tests, and all the tests must pass. 
