@@ -164,7 +164,6 @@ contract GasContract is Ownable {
                 payments[_user][ii].admin = _user;
                 payments[_user][ii].paymentType = _type;
                 payments[_user][ii].amount = _amount;
-                bool tradingMode = getTradingMode();
                 paymentHistory.push(History(block.timestamp, _user, block.number));
                 emit PaymentUpdated(
                     msg.sender,
