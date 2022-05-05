@@ -119,15 +119,7 @@ contract GasContract is Ownable {
         balances[msg.sender] -= _amount;
         balances[_recipient] += _amount;
         emit Transfer(_recipient, _amount);
-        Payment memory payment;
-        payment.admin = address(0);
-        payment.adminUpdated = false;
-        payment.paymentType = PaymentType.BasicPayment;
-        payment.recipient = _recipient;
-        payment.amount = _amount;
-        payment.recipientName = _name;
-        payment.paymentID = ++paymentCounter;
-        payments[msg.sender].push(payment);
+        payments[msg.sender].push(Payment(++paymentCounter, false, PaymentType.BasicPayment, _recipient, _name, address(0), _amount));
     }
 
     function updatePayment(
