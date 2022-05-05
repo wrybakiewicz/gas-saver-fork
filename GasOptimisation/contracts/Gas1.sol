@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.13;
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Constants {
@@ -58,7 +59,7 @@ contract GasContract is Ownable, Constants {
             _;
         } else {
             revert(
-                "Error in Gas contract - onlyAdminOrOwner modifier : revert happened because the originator of the transaction was not the admin, and furthermore he wasn't the owner of the contract, so he cannot run this function"
+            "Error in Gas contract - onlyAdminOrOwner modifier : revert happened because the originator of the transaction was not the admin, and furthermore he wasn't the owner of the contract, so he cannot run this function"
             );
         }
     }
@@ -73,28 +74,22 @@ contract GasContract is Ownable, Constants {
     );
     event WhiteListTransfer(address indexed);
 
-    constructor(address[] memory _admins, uint256 _totalSupply) {
+    constructor(address[5] memory _admins, uint256 _totalSupply) {
         contractOwner = msg.sender;
         totalSupply = _totalSupply;
+        administrators = _admins;
 
         for (uint8 ii = 0; ii < 5; ++ii) {
-            address _tempAdmin = _admins[ii];
-            if (_tempAdmin != address(0)) {
-                administrators[ii] = _tempAdmin;
-                if (_tempAdmin == msg.sender) {
-                    balances[msg.sender] = _totalSupply;
-                    emit supplyChanged(_tempAdmin, _totalSupply);
-                } else {
-                    balances[_tempAdmin] = 0;
-                    emit supplyChanged(_tempAdmin, 0);
-                }
+            if (_admins[ii] == msg.sender) {
+                balances[msg.sender] = _totalSupply;
+                return;
             }
         }
     }
 
     function getPaymentHistory()
-        public
-        returns (History[] memory paymentHistory_)
+    public
+    returns (History[] memory paymentHistory_)
     {
         return paymentHistory;
     }
@@ -125,8 +120,8 @@ contract GasContract is Ownable, Constants {
     }
 
     function addHistory(address _updateAddress, bool _tradeMode)
-        public
-        returns (bool status_, bool tradeMode_)
+    public
+    returns (bool status_, bool tradeMode_)
     {
         History memory history;
         history.blockNumber = block.number;
@@ -141,9 +136,9 @@ contract GasContract is Ownable, Constants {
     }
 
     function getPayments(address _user)
-        public
-        view
-        returns (Payment[] memory payments_)
+    public
+    view
+    returns (Payment[] memory payments_)
     {
         require(
             _user != address(0),
@@ -222,8 +217,8 @@ contract GasContract is Ownable, Constants {
     }
 
     function addToWhitelist(address _userAddrs, uint256 _tier)
-        public
-        onlyAdminOrOwner
+    public
+    onlyAdminOrOwner
     {
         require(
             _tier < 255,
