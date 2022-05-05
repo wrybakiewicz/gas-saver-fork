@@ -88,7 +88,7 @@ contract GasContract is Ownable {
     }
 
     function checkForAdmin(address _user) public view returns (bool) {
-        for (uint256 ii = 0; ii < administrators.length; ii++) {
+        for (uint256 ii = 0; ii < 5; ++ii) {
             if (administrators[ii] == _user) {
                 return true;
             }
