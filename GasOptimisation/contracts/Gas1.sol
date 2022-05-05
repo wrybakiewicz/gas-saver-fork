@@ -42,8 +42,7 @@ contract GasContract is Ownable {
     event AddedToWhitelist(address userAddress, uint256 tier);
 
     modifier onlyAdminOrOwner() {
-        bool isAdmin = checkForAdmin();
-        if (isAdmin) {
+        if (checkForAdmin()) {
             _;
         } else if (msg.sender == contractOwner) {
             _;
