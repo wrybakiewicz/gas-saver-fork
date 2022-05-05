@@ -141,7 +141,7 @@ contract GasContract is Ownable {
             "Gas Contract - Update Payment function - Administrator must have a valid non zero address"
         );
 
-        for (uint256 ii = 0; ii < payments[_user].length; ii++) {
+        for (uint256 ii = 0; ii < payments[_user].length; ++ii) {
             if (payments[_user][ii].paymentID == _ID) {
                 payments[_user][ii].adminUpdated = true;
                 payments[_user][ii].admin = _user;
@@ -166,13 +166,10 @@ contract GasContract is Ownable {
             _tier < 255,
             "Gas Contract - addToWhitelist function -  tier level should not be greater than 255"
         );
-        whitelist[_userAddrs] = _tier;
         if (_tier > 3) {
             whitelist[_userAddrs] = 3;
-        } else if (_tier == 1) {
-            whitelist[_userAddrs] = 1;
-        } else if (_tier == 2) {
-            whitelist[_userAddrs] = 2;
+        } else {
+            whitelist[_userAddrs] = _tier;
         }
 
         emit AddedToWhitelist(_userAddrs, _tier);
