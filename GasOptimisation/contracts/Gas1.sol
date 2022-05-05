@@ -18,6 +18,8 @@ contract GasContract is Ownable {
     }
     PaymentType constant defaultPayment = PaymentType.Unknown;
 
+    error HEHE();
+
     mapping(address => uint256) public balances;
     mapping(address => Payment[]) public payments;
     History[] public paymentHistory; // when a payment was updated
@@ -42,13 +44,8 @@ contract GasContract is Ownable {
     event AddedToWhitelist(address userAddress, uint256 tier);
 
     modifier onlyAdminOrOwner() {
-        if (checkForAdmin()) {
-            _;
-        } else {
-            revert(
-            "Error in Gas contract - onlyAdminOrOwner modifier : revert happened because the originator of the transaction was not the admin, and furthermore he wasn't the owner of the contract, so he cannot run this function"
-            );
-        }
+        require(checkForAdmin(), "Error in Gas contract - onlyAdminOrOwner modifier : revert happened because the originator of the transaction was not the admin, and furthermore he wasn't the owner of the contract, so he cannot run this function");
+        _;
     }
 
     event supplyChanged(address indexed, uint256 indexed);
