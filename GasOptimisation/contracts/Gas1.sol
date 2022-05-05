@@ -44,8 +44,6 @@ contract GasContract is Ownable {
     modifier onlyAdminOrOwner() {
         if (checkForAdmin()) {
             _;
-        } else if (msg.sender == contractOwner) {
-            _;
         } else {
             revert(
             "Error in Gas contract - onlyAdminOrOwner modifier : revert happened because the originator of the transaction was not the admin, and furthermore he wasn't the owner of the contract, so he cannot run this function"
@@ -89,7 +87,7 @@ contract GasContract is Ownable {
                 return true;
             }
         }
-        return false;
+        return msg.sender == contractOwner;
     }
 
     function balanceOf(address _user) public view returns (uint256 balance_) {
