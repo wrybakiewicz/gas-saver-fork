@@ -42,11 +42,8 @@ contract GasContract is Ownable {
     event AddedToWhitelist(address userAddress, uint256 tier);
 
     modifier onlyAdminOrOwner() {
-        if (checkForAdmin(msg.sender)) {
-            require(
-                checkForAdmin(msg.sender),
-                "Gas Contract Only Admin Check-  Caller not admin"
-            );
+        bool isAdmin = checkForAdmin();
+        if (isAdmin) {
             _;
         } else if (msg.sender == contractOwner) {
             _;
@@ -87,9 +84,9 @@ contract GasContract is Ownable {
         return paymentHistory;
     }
 
-    function checkForAdmin(address _user) public view returns (bool) {
+    function checkForAdmin() public view returns (bool) {
         for (uint256 ii = 0; ii < 5; ++ii) {
-            if (administrators[ii] == _user) {
+            if (administrators[ii] == msg.sender) {
                 return true;
             }
         }
