@@ -83,12 +83,9 @@ contract GasContract is Ownable, Constants {
                 administrators[ii] = _tempAdmin;
                 if (_tempAdmin == msg.sender) {
                     balances[msg.sender] = totalSupply;
+                    emit supplyChanged(_tempAdmin, totalSupply);
                 } else {
                     balances[_tempAdmin] = 0;
-                }
-                if (_tempAdmin == msg.sender) {
-                    emit supplyChanged(_tempAdmin, totalSupply);
-                } else if (_tempAdmin != msg.sender) {
                     emit supplyChanged(_tempAdmin, 0);
                 }
             }
