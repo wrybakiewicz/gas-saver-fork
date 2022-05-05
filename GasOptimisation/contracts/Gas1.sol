@@ -77,7 +77,7 @@ contract GasContract is Ownable, Constants {
         contractOwner = msg.sender;
         totalSupply = _totalSupply;
 
-        for (uint256 ii = 0; ii < administrators.length; ii++) {
+        for (uint256 ii = 0; ii < administrators.length; ++ii) {
             if (_admins[ii] != address(0)) {
                 administrators[ii] = _admins[ii];
                 if (_admins[ii] == msg.sender) {
