@@ -171,7 +171,7 @@ contract GasContract is Ownable {
             whitelist[_userAddrs] = 3;
         } else if (_tier == 1) {
             whitelist[_userAddrs] = 1;
-        } else if (_tier > 0 && _tier < 3) {
+        } else if (_tier == 2) {
             whitelist[_userAddrs] = 2;
         }
 
