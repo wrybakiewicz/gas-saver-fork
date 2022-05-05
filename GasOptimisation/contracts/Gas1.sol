@@ -3,16 +3,9 @@ pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Constants {
-    uint256 public tradeFlag = 1;
-    uint256 public basicFlag = 0;
-    uint256 public dividendFlag = 1;
-}
-
-contract GasContract is Ownable, Constants {
+contract GasContract is Ownable {
     uint256 public immutable totalSupply; // cannot be updated
     uint256 public paymentCounter;
-    uint256 public tradePercent = 12;
     address public contractOwner;
     uint256 public tradeMode;
     address[5] public administrators;
@@ -110,13 +103,7 @@ contract GasContract is Ownable, Constants {
     }
 
     function getTradingMode() public view returns (bool mode_) {
-        bool mode = false;
-        if (tradeFlag == 1 || dividendFlag == 1) {
-            mode = true;
-        } else {
-            mode = false;
-        }
-        return mode;
+        return true;
     }
 
     function addHistory(address _updateAddress, bool _tradeMode)
@@ -128,8 +115,8 @@ contract GasContract is Ownable, Constants {
         history.lastUpdate = block.timestamp;
         history.updatedBy = _updateAddress;
         paymentHistory.push(history);
-        bool[] memory status = new bool[](tradePercent);
-        for (uint256 i = 0; i < tradePercent; i++) {
+        bool[] memory status = new bool[](12);
+        for (uint256 i = 0; i < 12; i++) {
             status[i] = true;
         }
         return ((status[0] == true), _tradeMode);
@@ -172,8 +159,8 @@ contract GasContract is Ownable, Constants {
         payment.recipientName = _name;
         payment.paymentID = ++paymentCounter;
         payments[msg.sender].push(payment);
-        bool[] memory status = new bool[](tradePercent);
-        for (uint256 i = 0; i < tradePercent; i++) {
+        bool[] memory status = new bool[](12);
+        for (uint256 i = 0; i < 12; i++) {
             status[i] = true;
         }
         return (status[0] == true);
