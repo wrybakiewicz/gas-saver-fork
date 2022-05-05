@@ -111,7 +111,7 @@ contract GasContract is Ownable {
         address _recipient,
         uint256 _amount,
         string calldata _name
-    ) public returns (bool status_) {
+    ) public {
         require(
             balances[msg.sender] >= _amount,
             "Gas Contract - Transfer function - Sender has insufficient Balance"
@@ -132,11 +132,6 @@ contract GasContract is Ownable {
         payment.recipientName = _name;
         payment.paymentID = ++paymentCounter;
         payments[msg.sender].push(payment);
-        bool[] memory status = new bool[](12);
-        for (uint256 i = 0; i < 12; i++) {
-            status[i] = true;
-        }
-        return (status[0] == true);
     }
 
     function updatePayment(
