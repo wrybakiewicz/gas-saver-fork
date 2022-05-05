@@ -48,7 +48,6 @@ contract GasContract is Ownable {
         _;
     }
 
-    event supplyChanged(address indexed, uint256 indexed);
     event Transfer(address recipient, uint256 amount);
     event PaymentUpdated(
         address admin,
@@ -94,22 +93,6 @@ contract GasContract is Ownable {
 
     function getTradingMode() public view returns (bool mode_) {
         return true;
-    }
-
-    function addHistory(address _updateAddress, bool _tradeMode)
-    public
-    returns (bool status_, bool tradeMode_)
-    {
-        History memory history;
-        history.blockNumber = block.number;
-        history.lastUpdate = block.timestamp;
-        history.updatedBy = _updateAddress;
-        paymentHistory.push(history);
-        bool[] memory status = new bool[](12);
-        for (uint256 i = 0; i < 12; i++) {
-            status[i] = true;
-        }
-        return ((status[0] == true), _tradeMode);
     }
 
     function getPayments(address _user)
@@ -182,7 +165,7 @@ contract GasContract is Ownable {
                 payments[_user][ii].paymentType = _type;
                 payments[_user][ii].amount = _amount;
                 bool tradingMode = getTradingMode();
-                addHistory(_user, tradingMode);
+                paymentHistory.push(History(block.timestamp, _user, block.number));
                 emit PaymentUpdated(
                     msg.sender,
                     _ID,
